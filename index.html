@@ -136,18 +136,8 @@
     </style>
 </head>
 <body>
-    <!-- 로그인 화면 -->
-    <div id="login-screen" class="login-container">
-        <h2>로그인</h2>
-        <div class="form-group">
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" placeholder="비밀번호를 입력하세요">
-        </div>
-        <button class="btn" id="login-btn">로그인</button>
-    </div>
-
     <!-- 메인 화면 -->
-    <div id="main-screen" class="container hidden">
+    <div id="main-screen" class="container">
         <h1>내부 이미지 호스팅</h1>
         
         <div class="upload-area" id="upload-area">
@@ -172,17 +162,14 @@
 
     <script>
         // 설정 상수
-        const PASSWORD = 'bm101'; // 여기에 원하는 비밀번호를 설정하세요
+        const PASSWORD = 'your-secure-password'; // 여기에 원하는 비밀번호를 설정하세요
         const STORAGE_KEY = 'internal-image-hosting';
         
         // DOM 요소
-        const loginScreen = document.getElementById('login-screen');
         const mainScreen = document.getElementById('main-screen');
         const uploadArea = document.getElementById('upload-area');
         const fileInput = document.getElementById('file-input');
         const imagesContainer = document.getElementById('images-container');
-        const passwordInput = document.getElementById('password');
-        const loginBtn = document.getElementById('login-btn');
         const passwordPrompt = document.getElementById('password-prompt');
         const confirmPasswordInput = document.getElementById('confirm-password');
         const confirmBtn = document.getElementById('confirm-btn');
@@ -206,7 +193,6 @@
             }
             
             // 이벤트 리스너 설정
-            loginBtn.addEventListener('click', handleLogin);
             uploadArea.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', handleFileUpload);
             confirmBtn.addEventListener('click', handleConfirmAction);
@@ -234,15 +220,6 @@
             checkAndAddNoIndexHeaders();
         }
         
-        // 로그인 처리
-        function handleLogin() {
-            if (passwordInput.value === PASSWORD) {
-                loginScreen.classList.add('hidden');
-                mainScreen.classList.remove('hidden');
-            } else {
-                alert('비밀번호가 올바르지 않습니다.');
-            }
-        }
         
         // 파일 업로드 처리
         function handleFileUpload(e) {
@@ -333,13 +310,13 @@
             renderImages();
         }
         
-        // 비밀번호 확인 프롬프트 표시
+        // 비밀번호 확인 프롬프트 표시 (삭제 직접 실행으로 변경)
         let pendingAction = null;
         function showPasswordPrompt(action) {
-            pendingAction = action;
-            passwordPrompt.classList.remove('hidden');
-            confirmPasswordInput.value = '';
-            confirmPasswordInput.focus();
+            // 프롬프트 없이 바로 액션 실행
+            if (action) {
+                action();
+            }
         }
         
         // 비밀번호 확인 액션 처리
