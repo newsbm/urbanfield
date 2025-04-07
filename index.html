@@ -115,24 +115,6 @@
         .hidden {
             display: none;
         }
-        #password-prompt {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .prompt-container {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            width: 300px;
-        }
     </style>
 </head>
 <body>
@@ -148,21 +130,8 @@
         <div id="images-container" class="images-container"></div>
     </div>
 
-    <!-- 비밀번호 입력 프롬프트 -->
-    <div id="password-prompt" class="hidden">
-        <div class="prompt-container">
-            <h3>비밀번호 확인</h3>
-            <div class="form-group">
-                <input type="password" id="confirm-password" placeholder="사이트 비밀번호를 입력하세요">
-            </div>
-            <button class="btn" id="confirm-btn">확인</button>
-            <button class="btn" style="background: #999; margin-top: 10px;" id="cancel-btn">취소</button>
-        </div>
-    </div>
-
     <script>
         // 설정 상수
-        const PASSWORD = 'your-secure-password'; // 여기에 원하는 비밀번호를 설정하세요
         const STORAGE_KEY = 'internal-image-hosting';
         
         // DOM 요소
@@ -170,10 +139,6 @@
         const uploadArea = document.getElementById('upload-area');
         const fileInput = document.getElementById('file-input');
         const imagesContainer = document.getElementById('images-container');
-        const passwordPrompt = document.getElementById('password-prompt');
-        const confirmPasswordInput = document.getElementById('confirm-password');
-        const confirmBtn = document.getElementById('confirm-btn');
-        const cancelBtn = document.getElementById('cancel-btn');
         
         // 이미지 데이터 저장소
         let imageStore = [];
@@ -195,8 +160,6 @@
             // 이벤트 리스너 설정
             uploadArea.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', handleFileUpload);
-            confirmBtn.addEventListener('click', handleConfirmAction);
-            cancelBtn.addEventListener('click', () => passwordPrompt.classList.add('hidden'));
             
             // 드래그 앤 드롭 이벤트
             uploadArea.addEventListener('dragover', (e) => {
@@ -281,7 +244,7 @@
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.textContent = '삭제';
-                deleteBtn.addEventListener('click', () => showPasswordPrompt(() => deleteImage(img.id)));
+                deleteBtn.addEventListener('click', () => deleteImage(img.id));
                 
                 buttonGroup.appendChild(copyBtn);
                 buttonGroup.appendChild(deleteBtn);
@@ -308,28 +271,6 @@
             imageStore = imageStore.filter(img => img.id !== id);
             saveToStorage();
             renderImages();
-        }
-        
-        // 비밀번호 확인 프롬프트 표시 (삭제 직접 실행으로 변경)
-        let pendingAction = null;
-        function showPasswordPrompt(action) {
-            // 프롬프트 없이 바로 액션 실행
-            if (action) {
-                action();
-            }
-        }
-        
-        // 비밀번호 확인 액션 처리
-        function handleConfirmAction() {
-            if (confirmPasswordInput.value === PASSWORD) {
-                passwordPrompt.classList.add('hidden');
-                if (pendingAction) {
-                    pendingAction();
-                    pendingAction = null;
-                }
-            } else {
-                alert('비밀번호가 올바르지 않습니다.');
-            }
         }
         
         // 데이터 저장
